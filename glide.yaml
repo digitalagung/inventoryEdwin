@@ -1,0 +1,7 @@
+package: github.com/edwinlab/inventory
+import:
+  - package: github.com/labstack/echo
+  - package: github.com/dgrijalva/jwt-go
+  - package: github.com/valyala/fasthttp
+  - package: bitbucket.org/liamstask/goose/cmd/goose
+  - package: github.com/go-sql-driver/mysql
