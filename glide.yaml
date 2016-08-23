@@ -5,3 +5,4 @@ import:
   - package: github.com/valyala/fasthttp
   - package: bitbucket.org/liamstask/goose/cmd/goose
   - package: github.com/go-sql-driver/mysql
+  - package: gopkg.in/gorp.v1

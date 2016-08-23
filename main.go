@@ -16,6 +16,7 @@ func main() {
 	e.Use(middleware.Recover())
 
 	// Routes
+	e.GET("/users", user.GetUsers)
 	e.POST("/users", user.CreateUser)
 	e.GET("/users/:id", user.GetUser)
 	e.PUT("/users/:id", user.UpdateUser)

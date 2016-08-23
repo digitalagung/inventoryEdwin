@@ -5,49 +5,88 @@ import (
 	"strconv"
 
 	"github.com/labstack/echo"
+	"github.com/edwinlab/inventory/mysql"
 )
 
-type (
-	user struct {
-		ID   int    `json:"id"`
-		Name string `json:"name"`
-	}
-)
 
-var (
-	users = map[int]*user{}
-	seq   = 1
-)
+type User struct {
+	Id        int64  `db:"id" json:"id"`
+	Name 	  string `db:"name" json:"name"`
+}
 
-func CreateUser(c echo.Context) error {
-	u := &user{
-		ID: seq,
-	}
-	if err := c.Bind(u); err != nil {
+var dbmap = mysql.InitDb()
+
+func GetUsers(c echo.Context) error {
+	var users []User
+	_, err := dbmap.Select(&users, "SELECT * FROM users")
+	if err != nil {
 		return err
 	}
-	users[u.ID] = u
-	seq++
-	return c.JSON(http.StatusCreated, u)
+
+	return c.JSON(http.StatusOK, users)
+}
+
+func CreateUser(c echo.Context) error {
+	var user User
+	if err := c.Bind(&user); err != nil {
+		return err
+	}
+	insert, err := dbmap.Exec(`INSERT INTO users (name) VALUES (?)`, user.Name);
+	if err != nil {
+		return err
+	}
+
+	user_id, _ := insert.LastInsertId()
+	content := &User{
+		Id:   user_id,
+		Name: user.Name,
+	}
+	return c.JSON(http.StatusCreated, content)
 }
 
 func GetUser(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
-	return c.JSON(http.StatusOK, users[id])
+	var user User
+	err := dbmap.SelectOne(&user, "SELECT * FROM users WHERE id=? LIMIT 1", id)
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, user)
 }
 
 func UpdateUser(c echo.Context) error {
-	u := new(user)
-	if err := c.Bind(u); err != nil {
+	var user User
+	if err := c.Bind(&user); err != nil {
 		return err
 	}
+
 	id, _ := strconv.Atoi(c.Param("id"))
-	users[id].Name = u.Name
-	return c.JSON(http.StatusOK, users[id])
+	err := dbmap.SelectOne(&user, "SELECT * FROM users WHERE id=? LIMIT 1", id)
+	if err != nil {
+		return err
+	}
+
+	_, err = dbmap.Update(&user)
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, user)
 }
 
 func DeleteUser(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
-	delete(users, id)
+	var user User
+	err := dbmap.SelectOne(&user, "SELECT * FROM users WHERE id=? LIMIT 1", id)
+	if err != nil {
+		return err
+	}
+
+	_, err = dbmap.Delete(&user)
+	if err != nil {
+		return err
+	}
+
 	return c.NoContent(http.StatusNoContent)
 }
