@@ -65,5 +65,10 @@ DELETE /users/:id - Delete a user
 curl -X DELETE localhost:1323/users/id
 ```
 
+## To Do
+1. Deploy heroku
+2. Unit Test
+3. ???
+
 ## License
 BSD 3-clause
