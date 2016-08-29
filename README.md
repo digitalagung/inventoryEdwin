@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/edwinlab/inventory.svg?branch=master)](https://travis-ci.org/edwinlab/inventory)
+
 # Try Golang
 User and product management cases. The end goal is to build API endpoint for that case.
 
