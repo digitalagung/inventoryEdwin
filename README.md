@@ -4,6 +4,11 @@ User and product management cases. The end goal is to build API endpoint for tha
 ## Model & Database
 I keep the database schema fairly simple with `goose` to manage migration and `glide` to can easily manage with another developers.
 
+## Install
+```
+mv .env.tmp .env
+```
+
 ## API Endpoints
 Each description of endpoint will formatted like the following:
 

@@ -1,3 +1,4 @@
 .glide
 glide.lock
 vendor
+.env
