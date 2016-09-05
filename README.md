@@ -9,6 +9,9 @@ I keep the database schema fairly simple with `goose` to manage migration and `g
 ## Install
 ```
 mv .env.tmp .env
+glide update
+go build main.go
+./main
 ```
 
 ## API Endpoints
