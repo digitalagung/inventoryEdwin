@@ -10,6 +10,7 @@ I keep the database schema fairly simple with `goose` to manage migration and `g
 ```
 mv .env.tmp .env
 glide update
+goose up
 go build main.go
 ./main
 ```
